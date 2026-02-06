@@ -15,33 +15,34 @@ public class CandidateServiceImpl implements CandidateService {
     private final CandidateRepository candidateRepository;
 
     @Override
-    public CandidateResponse createCandidate(CandidateRequest request) {
+    public CandidateResponse createCandidate(Long userId, CandidateRequest request) {
 
-        if (candidateRepository.existsByEmail(request.getEmail())) {
-            throw new DuplicateUserException("Candidate already exists with this email");
-        }
-
-        if (candidateRepository.findByUserId(request.getUserId()).isPresent()) {
-            throw new DuplicateUserException("Candidate already exists for this user");
-        }
-
-        Candidate candidate = Candidate.builder()
-                .userId(request.getUserId())
-                .fullName(request.getFullName())
-                .email(request.getEmail())
-                .phone(request.getPhone())
-                .build();
-
-        Candidate saved = candidateRepository.save(candidate);
-
-        return CandidateResponse.builder()
-                .id(saved.getId())
-                .userId(saved.getUserId())
-                .fullName(saved.getFullName())
-                .email(saved.getEmail())
-                .phone(saved.getPhone())
-                .status(saved.getStatus())
-                .build();
+    if (candidateRepository.existsByEmail(request.getEmail())) {
+        throw new DuplicateUserException("Candidate already exists with this email");
     }
+
+    if (candidateRepository.findByUserId(userId).isPresent()) {
+        throw new DuplicateUserException("Candidate already exists for this user");
+    }
+
+    Candidate candidate = Candidate.builder()
+            .userId(userId)
+            .fullName(request.getFullName())
+            .email(request.getEmail())
+            .phone(request.getPhone())
+            .build();
+
+    Candidate saved = candidateRepository.save(candidate);
+
+    return CandidateResponse.builder()
+            .id(saved.getId())
+            .userId(saved.getUserId())
+            .fullName(saved.getFullName())
+            .email(saved.getEmail())
+            .phone(saved.getPhone())
+            .status(saved.getStatus())
+            .build();
+}
+
 
 }

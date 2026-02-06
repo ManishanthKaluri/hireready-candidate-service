@@ -7,5 +7,5 @@ import com.hireready.candidate.dto.CandidateResponse;
 
 @Service
 public interface CandidateService {
-    CandidateResponse createCandidate(CandidateRequest candidateRequest);
+    CandidateResponse createCandidate(Long userId, CandidateRequest candidateRequest);
 }

@@ -9,8 +9,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CandidateRequest {
-    @NotNull
-    private Long userId;
+    // @NotNull
+    // private Long userId;
 
     @NotBlank
     private String fullName;
@@ -19,5 +19,6 @@ public class CandidateRequest {
     @NotBlank
     private String email;
     private String phone;
+
 
 }

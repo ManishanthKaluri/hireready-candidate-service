@@ -18,9 +18,10 @@ public class CandidateController {
 
     @PostMapping
     public ResponseEntity<CandidateResponse> createCandidate(
+         @RequestHeader("X-User-Id") Long userId,
             @Valid @RequestBody CandidateRequest request) {
 
-        CandidateResponse response = candidateService.createCandidate(request);
+        CandidateResponse response = candidateService.createCandidate(userId,request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }
