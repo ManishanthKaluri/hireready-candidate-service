@@ -17,9 +17,17 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+
 
 management:
   endpoints:
     web:
       exposure:
         include: health,info
+resume:
+  storage:
+    path: ${user.dir}/uploads/resumes
