@@ -2,11 +2,15 @@ package com.hireready.candidate.service;
 
 import com.hireready.candidate.model.Resume;
 import com.hireready.candidate.repository.ResumeRepository;
+import com.hireready.candidate.resume.ResumeTextExtractor;
+import com.hireready.candidate.resume.ResumeTextExtractorFactory;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,6 +22,8 @@ import java.util.UUID;
 public class ResumeServiceImpl implements ResumeService {
 
     private final ResumeRepository resumeRepository;
+
+    private final ResumeTextExtractorFactory extractorFactory;
 
     @Value("${resume.storage.path}")
     private String storagePath;
@@ -65,4 +71,19 @@ public class ResumeServiceImpl implements ResumeService {
             throw new IllegalArgumentException("Only PDF and DOCX files are allowed");
         }
     }
+
+    @Override
+    public String extractResumeText(Long candidateId) {
+
+        Resume resume = resumeRepository.findByCandidateId(candidateId)
+                .orElseThrow(() -> new IllegalArgumentException("Resume not found"));
+
+        File resumeFile = new File(resume.getStoragePath());
+
+        ResumeTextExtractor extractor =
+                extractorFactory.getExtractor(resume.getFileType());
+
+        return extractor.extractText(resumeFile);
+    }
+
 }
