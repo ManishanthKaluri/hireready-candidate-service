@@ -31,3 +31,11 @@ management:
 resume:
   storage:
     path: ${user.dir}/uploads/resumes
+
+ai:
+  provider: openai
+  openai:
+    api-key: ${OPENAI_API_KEY}
+    model: gpt-4o-mini
+    url: https://api.openai.com/v1/chat/completions
+
