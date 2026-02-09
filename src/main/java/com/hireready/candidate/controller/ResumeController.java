@@ -1,5 +1,7 @@
 package com.hireready.candidate.controller;
 
+import com.hireready.candidate.ai.AiResumeAnalysisService;
+import com.hireready.candidate.domain.SkillProfile;
 import com.hireready.candidate.resume.ResumeTextExtractorFactory;
 import com.hireready.candidate.service.ResumeService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,8 @@ public class ResumeController {
 
     private final ResumeService resumeService;
 
+    private final AiResumeAnalysisService aiResumeAnalysisService;
+
     // ResumeController(ResumeTextExtractorFactory resumeTextExtractorFactory) {
     //     this.resumeTextExtractorFactory = resumeTextExtractorFactory;
     // }
@@ -33,10 +37,23 @@ public class ResumeController {
     }
 
     @PostMapping("/extract")
-    public String postMethodName( @PathVariable Long candidateId) {
-       
+    public String extractText(@PathVariable Long candidateId) {
         
         return resumeService.extractResumeText(candidateId);
     }
+
+       
+    @PostMapping("/ai")
+    public SkillProfile ai( @PathVariable Long candidateId) {
+        
+        String resumeText = resumeService.extractResumeText(candidateId);
+        SkillProfile profile =
+        aiResumeAnalysisService.extractSkillProfile(resumeText);
+        System.out.println(profile);
+
+        return profile;
+    }
+
+
     
 }

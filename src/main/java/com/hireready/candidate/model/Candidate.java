@@ -5,6 +5,8 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
+import com.hireready.candidate.domain.SkillProfile;
+
 @Entity
 @Table(name = "candidates")
 @Getter
@@ -38,6 +40,9 @@ public class Candidate {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    @OneToOne(mappedBy = "candidate", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private SkillProfile skillProfile;
 
     @PrePersist
     public void onCreate() {

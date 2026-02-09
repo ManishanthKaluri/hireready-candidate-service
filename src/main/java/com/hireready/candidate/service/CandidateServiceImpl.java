@@ -1,7 +1,9 @@
 package com.hireready.candidate.service;
 
+import com.hireready.candidate.domain.SkillProfile;
 import com.hireready.candidate.dto.CandidateRequest;
 import com.hireready.candidate.dto.CandidateResponse;
+import com.hireready.candidate.dto.SkillProfileResponse;
 import com.hireready.candidate.exception.DuplicateUserException;
 import com.hireready.candidate.model.Candidate;
 import com.hireready.candidate.repository.CandidateRepository;
@@ -44,5 +46,30 @@ public class CandidateServiceImpl implements CandidateService {
             .build();
 }
 
+public SkillProfileResponse getSkillProfile(Long candidateId, Long userId) {
+
+    Candidate candidate = candidateRepository.findById(candidateId)
+            .orElseThrow(() -> new RuntimeException("Candidate not found"));
+
+    if (!candidate.getUserId().equals(userId)) {
+        throw new RuntimeException("Unauthorized access");
+    }
+
+    SkillProfile profile = candidate.getSkillProfile();
+
+    if (profile == null) {
+        throw new RuntimeException("Skill profile not available");
+    }
+
+    return SkillProfileResponse.builder()
+        .candidateId(profile.getCandidate().getId())
+        .primarySkills(profile.getPrimarySkills())
+        .secondarySkills(profile.getSecondarySkills())
+        .yearsOfExperience(profile.getYearsOfExperience())
+        .seniority(profile.getSeniority().name())
+        .roles(profile.getRoles())
+        .industries(profile.getIndustries())
+        .build();
+}
 
 }

@@ -1,7 +1,9 @@
 package com.hireready.candidate.controller;
 
+import com.hireready.candidate.domain.SkillProfile;
 import com.hireready.candidate.dto.CandidateRequest;
 import com.hireready.candidate.dto.CandidateResponse;
+import com.hireready.candidate.dto.SkillProfileResponse;
 import com.hireready.candidate.service.CandidateService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,5 +25,15 @@ public class CandidateController {
 
         CandidateResponse response = candidateService.createCandidate(userId,request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @GetMapping("/{candidateId}/skill-profile")
+    public ResponseEntity<SkillProfileResponse> getSkillProfile(
+            @PathVariable Long candidateId,
+            @RequestHeader("X-User-Id") Long userId) {
+
+        return ResponseEntity.ok(
+                candidateService.getSkillProfile(candidateId, userId)
+        );
     }
 }

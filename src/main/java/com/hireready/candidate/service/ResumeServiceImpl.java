@@ -4,6 +4,7 @@ import com.hireready.candidate.model.Resume;
 import com.hireready.candidate.repository.ResumeRepository;
 import com.hireready.candidate.resume.ResumeTextExtractor;
 import com.hireready.candidate.resume.ResumeTextExtractorFactory;
+import com.hireready.candidate.service.CandidateAnalysisService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,6 +25,8 @@ public class ResumeServiceImpl implements ResumeService {
     private final ResumeRepository resumeRepository;
 
     private final ResumeTextExtractorFactory extractorFactory;
+
+    private final CandidateAnalysisService candidateAnalysisService;
 
     @Value("${resume.storage.path}")
     private String storagePath;
@@ -53,6 +56,7 @@ public class ResumeServiceImpl implements ResumeService {
                     .build();
 
             resumeRepository.save(resume);
+            candidateAnalysisService.analyzeCandidateResume(candidateId);
 
         } catch (IOException e) {
             throw new RuntimeException("Failed to upload resume", e);
