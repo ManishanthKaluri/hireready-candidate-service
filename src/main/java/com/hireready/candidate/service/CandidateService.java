@@ -10,4 +10,5 @@ import com.hireready.candidate.dto.SkillProfileResponse;
 public interface CandidateService {
     CandidateResponse createCandidate(Long userId, CandidateRequest candidateRequest);
     SkillProfileResponse getSkillProfile(Long candidateId, Long userId);
+    CandidateResponse syncInterviewResult(Long candidateId, Long userId, Long jobId);
 }

@@ -48,4 +48,15 @@ public class CandidateController {
                 interviewClient.fetchInterviewSummary(userId, jobId)
         );
     }
+
+    @PostMapping("/{candidateId}/sync-interview")
+    public ResponseEntity<CandidateResponse> syncInterview(
+            @PathVariable Long candidateId,
+            @RequestParam Long jobId,
+            @RequestHeader("X-User-Id") Long userId) {
+
+        return ResponseEntity.ok(
+                candidateService.syncInterviewResult(candidateId, userId, jobId)
+        );
+    }
 }

@@ -43,3 +43,6 @@ services:
   interview-service:
     base-url: http://localhost:8083
 
+interview:
+  pass-threshold: 70
+
