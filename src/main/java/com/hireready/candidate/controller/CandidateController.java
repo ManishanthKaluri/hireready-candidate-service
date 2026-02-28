@@ -1,5 +1,6 @@
 package com.hireready.candidate.controller;
 
+import com.hireready.candidate.client.InterviewClient;
 import com.hireready.candidate.domain.SkillProfile;
 import com.hireready.candidate.dto.CandidateRequest;
 import com.hireready.candidate.dto.CandidateResponse;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class CandidateController {
 
     private final CandidateService candidateService;
+    private final InterviewClient interviewClient;
 
     @PostMapping
     public ResponseEntity<CandidateResponse> createCandidate(
@@ -34,6 +36,16 @@ public class CandidateController {
 
         return ResponseEntity.ok(
                 candidateService.getSkillProfile(candidateId, userId)
+        );
+    }
+
+    @GetMapping("/interview/summary")
+    public ResponseEntity<?> getInterviewSummary(
+            @RequestHeader("X-User-Id") Long userId,
+            @RequestParam Long jobId) {
+
+        return ResponseEntity.ok(
+                interviewClient.fetchInterviewSummary(userId, jobId)
         );
     }
 }
