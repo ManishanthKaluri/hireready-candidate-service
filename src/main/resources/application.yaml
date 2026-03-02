@@ -22,12 +22,6 @@ spring:
       max-file-size: 5MB
       max-request-size: 5MB
 
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info
 resume:
   storage:
     path: ${user.dir}/uploads/resumes
@@ -45,4 +39,13 @@ services:
 
 interview:
   pass-threshold: 70
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
 
